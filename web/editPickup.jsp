@@ -94,8 +94,9 @@
                value="<%= rs.getString("recycling_type") %>" required />
 
         <label>Weight (kg)</label>
-        <input type="number" step="0.01" name="weight"
+        <input type="number" name="weight" step="0.01" min="0.01"
                value="<%= rs.getDouble("weight") %>" required />
+
 
         <label>Pickup Date</label>
         <input type="date" name="pickup_date"

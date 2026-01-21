@@ -3,16 +3,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.annotation.WebServlet;
 
 import util.DBConnection;
 
-@WebServlet("/UpdatePickupStatusServlet")
-public class UpdatePickupStatusServlet extends HttpServlet {
+@WebServlet("/UpdatePickupActionServlet")
+public class UpdatePickupActionServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -28,13 +28,12 @@ public class UpdatePickupStatusServlet extends HttpServlet {
 
         try {
             int pickupId = Integer.parseInt(request.getParameter("pickup_id"));
-            String status = request.getParameter("status");
+            String action = request.getParameter("action");
 
-            // ✅ Validate allowed status values
-            if (!("Pending".equals(status)
-               || "In Progress".equals(status)
-               || "On Hold".equals(status)
-               || "Completed".equals(status))) {
+            // Allow only valid actions
+            if (!("In Progress".equals(action)
+               || "On Hold".equals(action)
+               || "Escalated".equals(action))) {
 
                 response.sendRedirect("pickupList.jsp");
                 return;
@@ -43,9 +42,9 @@ public class UpdatePickupStatusServlet extends HttpServlet {
             Connection con = DBConnection.getConnection();
 
             PreparedStatement ps = con.prepareStatement(
-                "UPDATE pickups SET status=? WHERE pickup_id=?");
+                "UPDATE pickups SET action=? WHERE pickup_id=?");
 
-            ps.setString(1, status);
+            ps.setString(1, action);
             ps.setInt(2, pickupId);
 
             ps.executeUpdate();
@@ -53,10 +52,11 @@ public class UpdatePickupStatusServlet extends HttpServlet {
             ps.close();
             con.close();
 
+            response.sendRedirect("pickupList.jsp");
+
         } catch (Exception e) {
             e.printStackTrace();
+            response.sendRedirect("pickupList.jsp");
         }
-
-        response.sendRedirect("pickupList.jsp");
     }
 }

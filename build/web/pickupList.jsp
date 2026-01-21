@@ -20,14 +20,26 @@
             width: 90%;
             margin: 30px auto;
             border-collapse: collapse;
+            background: white;
         }
         th, td {
             padding: 10px;
             border: 1px solid #ccc;
             text-align: center;
         }
-        th { background: #2c7; color: white; }
-        button { padding: 5px 10px; }
+        th {
+            background: #2c7;
+            color: white;
+        }
+
+        select, button {
+            padding: 4px;
+        }
+
+        .locked {
+            color: gray;
+            font-style: italic;
+        }
     </style>
 </head>
 <body>
@@ -42,7 +54,7 @@
     <th>Weight (kg)</th>
     <th>Date</th>
     <th>Status</th>
-    <th>Action</th>
+    <th>Edit</th>
 </tr>
 
 <%
@@ -71,12 +83,15 @@
     <td><%= rs.getDouble("weight") %></td>
     <td><%= rs.getDate("pickup_date") %></td>
 
+    <!-- STATUS -->
     <td>
         <% if ("admin".equals(role)) { %>
             <form action="UpdatePickupStatusServlet" method="post">
                 <input type="hidden" name="pickup_id" value="<%= pickupId %>">
                 <select name="status">
                     <option value="Pending" <%= "Pending".equals(status) ? "selected" : "" %>>Pending</option>
+                    <option value="In Progress" <%= "In Progress".equals(status) ? "selected" : "" %>>In Progress</option>
+                    <option value="On Hold" <%= "On Hold".equals(status) ? "selected" : "" %>>On Hold</option>
                     <option value="Completed" <%= "Completed".equals(status) ? "selected" : "" %>>Completed</option>
                 </select>
                 <button type="submit">Update</button>
@@ -86,14 +101,18 @@
         <% } %>
     </td>
 
+    <!-- EDIT -->
     <td>
-    <% if (!"admin".equals(role)) { %>
-        <a href="editPickup.jsp?id=<%= pickupId %>">Edit</a>
-    <% } else { %>
-        N/A
-    <% } %>
-</td>
-
+        <% if (!"admin".equals(role)) { %>
+            <% if ("Pending".equals(status)) { %>
+                <a href="editPickup.jsp?id=<%= pickupId %>">Edit</a>
+            <% } else { %>
+                <span class="locked">Locked</span>
+            <% } %>
+        <% } else { %>
+            N/A
+        <% } %>
+    </td>
 </tr>
 <%
     }

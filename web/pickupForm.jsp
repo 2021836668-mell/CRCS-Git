@@ -91,7 +91,7 @@
         </select>
 
         <label>Estimated Weight (kg)</label>
-        <input type="number" step="0.01" name="weight" placeholder="e.g. 2.50" required />
+        <input type="number" name="weight" step="0.01" min="0.01" placeholder="e.g. 2.50" required />
 
         <label>Pickup Date</label>
         <input type="date" name="pickup_date" required />
