@@ -30,12 +30,13 @@ public class UpdatePickupStatusServlet extends HttpServlet {
             int pickupId = Integer.parseInt(request.getParameter("pickup_id"));
             String status = request.getParameter("status");
 
-            // ✅ Validate allowed status values
-            if (!("Pending".equals(status)
-               || "In Progress".equals(status)
-               || "On Hold".equals(status)
-               || "Completed".equals(status))) {
-
+            // ✅ Allow ONLY predefined status values
+            if (!(
+                    "Pending".equals(status)
+                 || "In Progress".equals(status)
+                 || "On Hold".equals(status)
+                 || "Completed".equals(status)
+                )) {
                 response.sendRedirect("pickupList.jsp");
                 return;
             }
@@ -53,6 +54,9 @@ public class UpdatePickupStatusServlet extends HttpServlet {
             ps.close();
             con.close();
 
+        } catch (NumberFormatException e) {
+            // Invalid pickup_id
+            e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }

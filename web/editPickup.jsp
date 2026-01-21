@@ -16,6 +16,8 @@
 
     ResultSet rs = ps.executeQuery();
     rs.next();
+
+    String currentType = rs.getString("recycling_type");
 %>
 
 <!DOCTYPE html>
@@ -45,12 +47,15 @@
             display: block;
             margin-top: 12px;
         }
-        input, button {
+        input, select, button {
             width: 100%;
             padding: 10px;
             margin-top: 6px;
             box-sizing: border-box;
             font-size: 14px;
+        }
+        select {
+            background: #fff;
         }
         button {
             background: #2c7;
@@ -96,8 +101,12 @@
         <input type="hidden" name="pickup_id" value="<%= id %>">
 
         <label>Recycling Type</label>
-        <input type="text" name="recycling_type"
-               value="<%= rs.getString("recycling_type") %>" required />
+        <select name="recycling_type" required>
+            <option value="Plastic" <%= "Plastic".equals(currentType) ? "selected" : "" %>>Plastic</option>
+            <option value="Paper"   <%= "Paper".equals(currentType) ? "selected" : "" %>>Paper</option>
+            <option value="Glass"   <%= "Glass".equals(currentType) ? "selected" : "" %>>Glass</option>
+            <option value="Metal"   <%= "Metal".equals(currentType) ? "selected" : "" %>>Metal</option>
+        </select>
 
         <label>Weight (kg)</label>
         <input type="number" name="weight" step="0.01" min="0.01"

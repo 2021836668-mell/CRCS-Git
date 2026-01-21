@@ -29,7 +29,7 @@ public class PickupServlet extends HttpServlet {
         try {
             double weight = Double.parseDouble(req.getParameter("weight"));
 
-            /* ❌ BLOCK negative or zero weight */
+            // ❌ Block invalid weight
             if (weight <= 0) {
                 req.setAttribute("error", "Weight must be greater than 0.");
 
@@ -45,7 +45,7 @@ public class PickupServlet extends HttpServlet {
 
             Connection con = DBConnection.getConnection();
 
-            /* 🔒 LOCK editing if status = Completed (SERVER SIDE) */
+            // 🔒 Server-side lock: user cannot edit completed pickup
             if ("update".equals(action)) {
 
                 PreparedStatement checkPs = con.prepareStatement(
@@ -53,14 +53,14 @@ public class PickupServlet extends HttpServlet {
                 checkPs.setInt(1, Integer.parseInt(req.getParameter("pickup_id")));
                 ResultSet rs = checkPs.executeQuery();
 
-                if (rs.next() && "Completed".equals(rs.getString("status"))
+                if (rs.next()
+                        && "Completed".equals(rs.getString("status"))
                         && !"admin".equals(role)) {
 
                     rs.close();
                     checkPs.close();
                     con.close();
 
-                    // Block update
                     res.sendRedirect("pickupList.jsp");
                     return;
                 }
@@ -69,24 +69,23 @@ public class PickupServlet extends HttpServlet {
                 checkPs.close();
             }
 
-            /* CREATE PICKUP */
+            // ✅ CREATE PICKUP
             if ("create".equals(action)) {
                 PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO pickups (user_id, recycling_type, weight, pickup_date, status, action) " +
-                    "VALUES (?,?,?,?,?,?)");
+                    "INSERT INTO pickups (user_id, recycling_type, weight, pickup_date, status) " +
+                    "VALUES (?,?,?,?,?)");
 
                 ps.setInt(1, userId);
                 ps.setString(2, req.getParameter("recycling_type"));
                 ps.setDouble(3, weight);
                 ps.setDate(4, java.sql.Date.valueOf(req.getParameter("pickup_date")));
                 ps.setString(5, "Pending");
-                ps.setString(6, "In Progress");
 
                 ps.executeUpdate();
                 ps.close();
             }
 
-            /* UPDATE PICKUP (USER ONLY, ADMIN HANDLES STATUS SEPARATELY) */
+            // ✅ UPDATE PICKUP (USER ONLY – NO STATUS)
             if ("update".equals(action)) {
                 PreparedStatement ps = con.prepareStatement(
                     "UPDATE pickups SET recycling_type=?, weight=?, pickup_date=? WHERE pickup_id=?");
