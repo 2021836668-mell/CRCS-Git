@@ -45,15 +45,13 @@
             display: block;
             margin-top: 12px;
         }
-
-        input, select, button {
+        input, button {
             width: 100%;
             padding: 10px;
             margin-top: 6px;
             box-sizing: border-box;
             font-size: 14px;
         }
-
         button {
             background: #2c7;
             color: white;
@@ -66,7 +64,6 @@
         button:hover {
             background: #249f5f;
         }
-
         .back {
             text-align: center;
             margin-top: 15px;
@@ -77,6 +74,15 @@
         }
         .back a:hover {
             text-decoration: underline;
+        }
+        .status-view {
+            margin-top: 12px;
+            padding: 8px;
+            background: #f1f1f1;
+            border-radius: 4px;
+            text-align: center;
+            font-style: italic;
+            color: #666;
         }
     </style>
 </head>
@@ -97,16 +103,15 @@
         <input type="number" name="weight" step="0.01" min="0.01"
                value="<%= rs.getDouble("weight") %>" required />
 
-
         <label>Pickup Date</label>
         <input type="date" name="pickup_date"
                value="<%= rs.getDate("pickup_date") %>" required />
 
+        <!-- STATUS DISPLAY ONLY -->
         <label>Status</label>
-        <select name="status">
-            <option <%= "Pending".equals(rs.getString("status")) ? "selected" : "" %>>Pending</option>
-            <option <%= "Completed".equals(rs.getString("status")) ? "selected" : "" %>>Completed</option>
-        </select>
+        <div class="status-view">
+            <%= rs.getString("status") %> (Admin Controlled)
+        </div>
 
         <button type="submit">Update Pickup</button>
     </form>
