@@ -100,7 +100,6 @@
                 <select name="role_id">
                     <option value="1" <%= "admin".equals(roleName) ? "selected" : "" %>>Admin</option>
                     <option value="2" <%= "user".equals(roleName) ? "selected" : "" %>>User</option>
-                    <option value="3" <%= "collector".equals(roleName) ? "selected" : "" %>>Collector</option>
                 </select>
                 <button type="submit">Update</button>
             </form>
