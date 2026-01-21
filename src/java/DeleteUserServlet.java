@@ -20,7 +20,6 @@ public class DeleteUserServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
 
-        // ---- ADMIN CHECK ----
         if (session == null || !"admin".equals(session.getAttribute("role"))) {
             response.sendRedirect("index.jsp");
             return;
@@ -29,7 +28,6 @@ public class DeleteUserServlet extends HttpServlet {
         int userIdToDelete = Integer.parseInt(request.getParameter("id"));
         int adminId = (int) session.getAttribute("user_id");
 
-        // Prevent admin from deleting themselves
         if (userIdToDelete == adminId) {
             response.sendRedirect("userList.jsp");
             return;

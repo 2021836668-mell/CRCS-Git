@@ -35,7 +35,6 @@
             margin-top: 12px;
         }
 
-        /* Consistent sizing fix */
         input, select, button {
             width: 100%;
             padding: 10px;

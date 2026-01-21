@@ -28,7 +28,6 @@
             margin-top: 12px;
         }
 
-        /* SAME SIZING AS PICKUP / REGISTER FORMS */
         input, button {
             width: 100%;
             padding: 10px;
@@ -89,14 +88,12 @@
         <button type="submit">Login</button>
     </form>
 
-    <!-- Error message -->
     <div class="error">
         <%= request.getAttribute("error") != null
                 ? request.getAttribute("error")
                 : "" %>
     </div>
 
-    <!-- USER registration -->
     <div class="register-link">
         New user? <a href="userRegister.jsp">Create an account</a>
     </div>

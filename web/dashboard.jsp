@@ -3,7 +3,6 @@
 <%@ page import="util.DBConnection" %>
 
 <%
-    // ---- LOGIN PROTECTION ----
     if (session.getAttribute("user_id") == null) {
         response.sendRedirect("index.jsp");
         return;
@@ -103,7 +102,6 @@
     <h2>Welcome, <%= name %></h2>
     <p><strong>Role:</strong> <%= role %></p>
 
-    <!-- STATISTICS -->
     <div class="stats">
         <div class="card">
             <h3><%= totalPickups %></h3>
@@ -125,11 +123,9 @@
 
     <hr>
 
-    <!-- COMMON MENU -->
     <div class="menu">
         <a href="pickupList.jsp">View Pickups</a>
 
-        <%-- ✅ ONLY USERS CAN SCHEDULE PICKUP --%>
         <% if (!"admin".equals(role)) { %>
             <a href="pickupForm.jsp">Schedule Recycling Pickup</a>
         <% } %>

@@ -36,12 +36,11 @@
             margin-top: 12px;
         }
 
-        /* 🔑 IMPORTANT FIX */
         input, select, button {
             width: 100%;
             padding: 10px;
             margin-top: 6px;
-            box-sizing: border-box; /* ✅ makes all same width */
+            box-sizing: border-box;
             font-size: 14px;
         }
 
@@ -110,7 +109,6 @@
         <button type="submit">Create User</button>
     </form>
 
-    <!-- Messages -->
     <div class="msg error">
         <%= request.getAttribute("error") != null ? request.getAttribute("error") : "" %>
     </div>

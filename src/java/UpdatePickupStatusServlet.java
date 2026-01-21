@@ -17,7 +17,6 @@ public class UpdatePickupStatusServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
 
-        // ---- ADMIN CHECK ----
         if (session == null || !"admin".equals(session.getAttribute("role"))) {
             response.sendRedirect("index.jsp");
             return;

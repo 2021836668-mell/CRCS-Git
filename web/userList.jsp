@@ -3,7 +3,6 @@
 <%@ page import="util.DBConnection" %>
 
 <%
-    // ---- ADMIN PROTECTION ----
     if (session.getAttribute("user_id") == null ||
         !"admin".equals(session.getAttribute("role"))) {
         response.sendRedirect("index.jsp");

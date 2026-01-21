@@ -22,20 +22,17 @@ public class UserRegisterServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        // FORCE role = USER
         int roleId = 2;
 
         try {
             Connection con = DBConnection.getConnection();
 
-            // 1️⃣ Check duplicate email
             String checkSql = "SELECT user_id FROM users WHERE email=?";
             PreparedStatement checkPs = con.prepareStatement(checkSql);
             checkPs.setString(1, email);
             ResultSet rs = checkPs.executeQuery();
 
             if (rs.next()) {
-                // Email already exists
                 request.setAttribute("error", "Email already registered.");
                 request.getRequestDispatcher("userRegister.jsp")
                        .forward(request, response);
@@ -48,14 +45,13 @@ public class UserRegisterServlet extends HttpServlet {
             rs.close();
             checkPs.close();
 
-            // 2️⃣ Insert new user
             String insertSql =
                 "INSERT INTO users (name, email, password, role_id) VALUES (?, ?, ?, ?)";
 
             PreparedStatement ps = con.prepareStatement(insertSql);
             ps.setString(1, name);
             ps.setString(2, email);
-            ps.setString(3, password); // (plain for now)
+            ps.setString(3, password);
             ps.setInt(4, roleId);
 
             ps.executeUpdate();
@@ -63,7 +59,6 @@ public class UserRegisterServlet extends HttpServlet {
             ps.close();
             con.close();
 
-            // 3️⃣ Success → back to login
             request.setAttribute("success", "Registration successful. Please login.");
             request.getRequestDispatcher("index.jsp")
                    .forward(request, response);

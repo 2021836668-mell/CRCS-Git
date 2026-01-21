@@ -3,7 +3,6 @@
 <%@ page import="util.DBConnection" %>
 
 <%
-    // ---- LOGIN PROTECTION ----
     if (session.getAttribute("user_id") == null) {
         response.sendRedirect("index.jsp");
         return;

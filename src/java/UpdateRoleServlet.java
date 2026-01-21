@@ -20,7 +20,6 @@ public class UpdateRoleServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
 
-        // ---- ADMIN CHECK ----
         if (session == null || !"admin".equals(session.getAttribute("role"))) {
             response.sendRedirect("index.jsp");
             return;
@@ -30,7 +29,6 @@ public class UpdateRoleServlet extends HttpServlet {
         int newRoleId = Integer.parseInt(request.getParameter("role_id"));
         int adminId = (int) session.getAttribute("user_id");
 
-        // Prevent admin from changing own role
         if (targetUserId == adminId) {
             response.sendRedirect("userList.jsp");
             return;

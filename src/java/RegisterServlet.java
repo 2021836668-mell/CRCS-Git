@@ -20,7 +20,6 @@ public class RegisterServlet extends HttpServlet {
 
         HttpSession session = request.getSession(false);
 
-        // Security check
         if (session == null || !"admin".equals(session.getAttribute("role"))) {
             response.sendRedirect("index.jsp");
             return;

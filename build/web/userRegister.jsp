@@ -55,7 +55,6 @@
         .success { color: green; }
     </style>
 
-    <!-- 🔐 Password match validation -->
     <script>
         function validatePassword() {
             const pwd = document.getElementById("password").value;
@@ -90,7 +89,6 @@
         <input type="password" id="confirm_password"
                placeholder="Re-enter password" required />
 
-        <!-- AUTO role = USER -->
         <input type="hidden" name="role_id" value="2" />
 
         <button type="submit">Register</button>
