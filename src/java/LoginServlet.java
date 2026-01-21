@@ -25,10 +25,11 @@ public class LoginServlet extends HttpServlet {
         try {
             Connection con = DBConnection.getConnection();
 
-            String sql = "SELECT u.user_id, u.name, r.role_name " +
-                         "FROM users u " +
-                         "JOIN roles r ON u.role_id = r.role_id " +
-                         "WHERE u.email = ? AND u.password = ?";
+            String sql =
+                "SELECT u.user_id, u.name, r.role_name " +
+                "FROM users u " +
+                "JOIN roles r ON u.role_id = r.role_id " +
+                "WHERE u.email = ? AND u.password = ? AND u.status = 'active'";
 
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, email);
@@ -43,8 +44,23 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("role", rs.getString("role_name"));
 
                 response.sendRedirect("dashboard.jsp");
+
             } else {
-                request.setAttribute("error", "Invalid email or password");
+                String checkSql =
+                    "SELECT status FROM users WHERE email = ?";
+                PreparedStatement checkPs = con.prepareStatement(checkSql);
+                checkPs.setString(1, email);
+                ResultSet checkRs = checkPs.executeQuery();
+
+                if (checkRs.next() && "disabled".equals(checkRs.getString("status"))) {
+                    request.setAttribute("error", "Your account has been disabled. Please contact admin.");
+                } else {
+                    request.setAttribute("error", "Invalid email or password.");
+                }
+
+                checkRs.close();
+                checkPs.close();
+
                 request.getRequestDispatcher("index.jsp").forward(request, response);
             }
 
