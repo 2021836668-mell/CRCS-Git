@@ -103,8 +103,7 @@
             <option value="">Select role</option>
             <option value="1">Admin</option>
             <option value="2">User</option>
-            <option value="3">Collector</option>
-        </select>
+                    </select>
 
         <button type="submit">Create User</button>
     </form>
